@@ -1,0 +1,23 @@
+<h3>Listing comments</h3>
+
+<table class="table table-hover table-bordered">
+  <tr>
+    <th>Comment content</th>
+    <th>Post</th>
+    <th>User</th>
+
+  </tr>
+
+<% @comments.each do |comment| %>
+  <tr>
+    <td><%= comment.comment_con %></td>
+    <td><%= comment.post %></td>
+    <td><%= comment.user %></td>
+
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<button class="btn"><%= link_to 'New Comment', new_comment_path %>   </button>

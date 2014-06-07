@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+<% if @post.user_id == 9999 %>
+    <% @post_owner = 'Anonymous User' %>
+<% else %>
+    <% @post_owner = @post.user.username %>
+<% end %>
+
+<div class="outerbox">
+<p>
+  <b>Post title:</b>
+  <%= @post.post_title %>
+</p>
+
+<p>
+  <b>Post content:</b>
+  <%= @post.post_content %>
+</p>
+
+<p>
+  <b>Category:</b>
+  <%= @post.category.category_name %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @post_owner %>
+</p>
+
+  <% if session[:user] != nil %>
+<% if @post.user_id == session[:user].id %>
+<button class="btn"><%= link_to 'Edit', edit_post_path(@post) %>  </button>
+      <button class="btn">     <%= link_to 'Back', posts_path %>   </button>
+<%else%>
+      <button class="btn">   <%= link_to 'Back', posts_path %>  </button>
+<% end %>
+      <% else %>
+      <button class="btn">   <%= link_to 'Back', posts_path %>  </button>
+<% end %>
+
+
+</div>

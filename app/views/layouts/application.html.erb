@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BackApp</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+
+<div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <h2 class="brand">BackChannel App </h2>
+
+      <p style="position: absolute; right: 10px; top: 10px ">
+        <% if session[:user_type] == 'admin' || session[:user_type] == 'super admin' %>
+        <button class="btn btn-primary"> <%= link_to 'Home' , :controller=>'admin' ,:action=> 'admin_home'  %>  </button>
+        <% else %>
+        <button class="btn btn-primary"> <%= link_to 'Home' , :controller=>'posts' ,:action=> 'index'  %>  </button>
+        <% end %>
+        <button class="btn btn-primary"><%=link_to 'Search', :controller => 'posts', :action => 'search'%></button>
+
+      <% if session[:user] == nil %>
+          <button type="button" class="btn btn-default"> <%= link_to 'Login' , :controller => 'login' , :action => 'login' %> </button>
+      <% else %>
+          <button type="button" class="btn btn-default"> <%= link_to 'Logout' , :controller => 'login' , :action => 'remove' %>   </button>
+      <% end %>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+ <div class="span4"></div>
+  <div class="span8">
+<%= yield %>
+</div>
+</div>
+
+<% if session[:impersonate] == 'true' %>
+     <button class="btn"><%= link_to 'Stop Impersonating' , :controller => 'admin' , :action => 'stop_impersonate' %> </button>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

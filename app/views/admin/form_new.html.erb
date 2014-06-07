@@ -1,0 +1,19 @@
+<h1>Add Admin</h1>
+
+<%= form_tag :controller => 'admin', :action => 'create' do%>
+
+
+    <p>
+
+      <label for = "Username">Username</label>
+      <%= text_field_tag :username,params[:username] %>  <br/>
+      <label for = "password">password</label>
+      <%= password_field_tag :password,params[:password] %>
+    </p>
+
+    <p>
+      <%= submit_tag "Login"  %>
+    </p>
+
+<%end %>
+<%= link_to 'Back to Home'  ,:controller => 'admin' , :action => 'admin_home' %>

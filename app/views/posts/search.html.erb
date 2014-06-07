@@ -1,0 +1,32 @@
+<%= form_tag :controller => 'posts', :action => 'display_search' do%>
+
+
+    <div class="outerbox">
+
+    <p id="failure"><%= flash[:failure] %></p>
+    <h3> Search </h3>
+    <p>
+      <label for = "search">Search :</label>
+      <%= text_field_tag :search,params[:search] %>  <br/>
+
+    <div class="form_row">
+      <label for="theme">Filter :</label>
+      <% ['user','category','content','tags'].each do |theme| %>
+          <%= radio_button_tag 'theme', theme, @theme == theme %>
+          <%= theme.humanize %>
+      <% end %>
+    </div>
+
+
+    </p>
+
+    <p>
+      <%= submit_tag "Search" , :class=>'btn' %>
+    </p>
+
+    <p>
+    <button class="btn"><%= link_to 'Sign Up', new_user_path %>  </button>
+    </p>
+
+    </div>
+<%end %>

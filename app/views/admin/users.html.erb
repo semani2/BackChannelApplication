@@ -1,0 +1,30 @@
+<h3>Listing New User</h3>
+
+<table class="table table-hover table-bordered">
+  <tr>
+    <th>Name</th>
+    <th>Username</th>
+    <th>Password</th>
+
+    <th></th>
+
+
+  </tr>
+  <% @users = User.find_all_by_usertype('user')%>
+  <% @users.each do |user| %>
+
+          <tr>
+
+            <td><%= user.username %></td>
+            <td><%= user.password %></td>
+            <td><%= user.usertype %></td>
+
+
+            <td><button class="btn "><%= link_to 'Delete', :controller => 'admin', :action => 'delete_user', :id => user.id, data: { confirm: 'Are you sure?' } %></button> </td>
+          </tr>
+
+  <% end %>
+</table>
+
+
+<button class="btn"><%= link_to 'Home'  ,:controller => 'admin' , :action => 'admin_home' %> </button>

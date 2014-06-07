@@ -1,0 +1,13 @@
+<h1>Login#show</h1>
+<% if session[:user] != nil %>
+
+<%= "Session name : " +session[:user].username%>
+
+    <%= "Session id : " +session[:user].id.to_s%>
+    <%= session[:user_type] %>
+<%else%>
+
+
+<%= "Session not created" %>
+    <%= session[:user_type] %>
+<% end %>

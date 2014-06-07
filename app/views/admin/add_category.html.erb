@@ -1,0 +1,16 @@
+<h1> Add a category</h1>
+<%= form_tag :controller => 'admin', :action => 'add_category' do%>
+
+
+    <p>
+
+      <label for = "category">Category Name </label>
+      <%= text_field_tag :category,params[:category_name] %>  <br/>
+
+    </p>
+
+    <p>
+      <%= submit_tag "Add category"  %>
+    </p>
+
+<%end %>

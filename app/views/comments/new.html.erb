@@ -1,0 +1,148 @@
+    <!-- Display the post title , post content and then list all the set of comments for that post and add a prompt for the user to add a comment -->
+
+    <div class="row">
+      <div class="span8">
+        <div class='box'>
+          <div class="header">
+
+            <div class="title">
+              <%= Post.find(params[:post_id]).post_title %>
+            </div>
+
+            <div class="createdby">
+              <% if Post.find(params[:post_id]).user_id == 9999 %>
+                  Created by:<%= 'Anonymous user' %>
+               <% else %>
+               Created by:<%= User.find(Post.find(params[:post_id]).user_id).username %>
+
+              <% end %>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="content">
+            <%= Post.find(params[:post_id]).post_content %>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <div class="row">
+
+      <div class="span1"></div>
+      <div class="span7">
+
+
+<% @post_comments = Comment.find_all_by_post_id(params[:post_id]) %>
+  <% @post_comments.each do |comment| %>
+      <% num_votes = CommentVote.count_by_sql "select count(*) from comment_votes where comment_id =#{comment.id}" %>
+            <% if comment.user_id == 9999 %>
+                <% @comment_owner = 'Anonymous User' %>
+            <% else %>
+                <%  @comment_owner = comment.user.username %>
+            <% end %>
+   <% if session[:user] == nil %>
+
+                <div class='box'>
+
+                  <div class="header1"><div class="createdby">
+
+                    Created by:<%= @comment_owner %>
+
+
+                  </div>   </div>
+                       <hr>
+                    <div class="content1"> <%= comment.comment_con %>
+                    </div>
+
+
+                  <div class="footer1">
+
+                    <i class=" icon-thumbs-up"></i> <%= "#{num_votes}" %>
+
+                  </div>
+                </div>
+      
+    <% else %>
+         <% if comment.user_id == session[:user].id || session[:user_type] == 'super admin' || session[:user_type] == 'admin' %>
+
+                    <div class="box">
+
+
+
+                      <div class="header1">
+                        <div class="createdby1">
+
+                        Created by:<%= @comment_owner %>
+                      </div>
+                      </div>
+                        <hr>
+                      <div class="content1"> <%= comment.comment_con %>
+                      </div>
+
+                      <div class="footer1">
+                        <i class=" icon-thumbs-up"></i><%= "#{num_votes}" %>
+                        <button class="btn btn-warning edit1"><%= link_to 'edit', edit_comment_path(comment) %>  </button>
+                        <button class="btn  btn-danger destroy1"> <%= link_to 'destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %> </button>
+                      </div>
+                    </div>
+
+
+
+
+
+
+          <% else %>
+
+                    <div class='box'>
+
+
+                     <div class="header1">
+                      <div class="createdby1">
+
+                        Created by:<%= @comment_owner %>
+                      </div>
+                     </div>
+                      <hr>
+                      <div class="content1"> <%= comment.comment_con %>   </div>
+
+                      <div class="footer1">
+                        <i class=" icon-thumbs-up"></i>  <%= link_to "#{num_votes}" , :controller=> 'comments' , :action=>'vote', :comment_id=>comment.id %>
+
+                      </div>
+                    </div>
+
+
+
+
+
+
+
+          <% end %>
+      <% end %>
+  <% end %>
+
+
+
+
+
+ <% session[:post_id] = params[:post_id] %>
+
+
+        <div class="outerbox">
+          <% if session[:user] != nil %>
+              <%= render 'form' %>
+          <% end %>
+
+          <button class="btn"><%= link_to 'BACK',:controller => 'posts', :actions => 'index'  %>  </button>
+        </div>
+
+
+
+    </div>
+    </div>

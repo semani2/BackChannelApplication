@@ -1,0 +1,35 @@
+<%= form_for(@post) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :post_title %><br />
+    <%= f.text_field :post_title %>
+  </div>
+  <div class="field">
+    <%= f.label :post_content %><br />
+    <%= f.text_area :post_content , :columns => '10', :rows =>'5' %>
+  </div>
+    <% @taglist = "" %>
+    <% (Tag.find_all_by_post_id(@post)).each do |tag| @taglist += tag.tag_name+" "  end %>
+
+ <label>Tags </label><input type="text" name="Tags"  /> <br/>
+    <label> existing tags are : </label> <label><%= "#{@taglist}" %></label>
+  <div class="field">
+    <%= f.label :add_category  %>
+    <%= select("post", "category_id", Category.all.collect{ |c| [ c.category_name, c.id] })  %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit 'SUBMIT' ,:class=> 'btn btn-primary' %>
+  </div>
+<% end %>

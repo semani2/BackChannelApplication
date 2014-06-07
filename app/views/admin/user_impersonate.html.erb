@@ -1,0 +1,23 @@
+
+<div class="outerbox">
+<h3>Impersonate User</h3>
+
+<%= form_tag :controller => 'admin', :action => 'user_impersonate' do%>
+
+
+    <p>
+
+      <label for = "Username">Username</label>
+      <%= text_field_tag :username,params[:username] %>  <br/>
+
+    </p>
+
+    <p>
+      <%= submit_tag "Impersonate" , :class=>'btn' %>
+    </p>
+
+<%end %>
+  <button class="btn"><%= link_to 'Back to Home'  ,:controller => 'admin' , :action => 'admin_home' %>  </button>
+
+
+</div>

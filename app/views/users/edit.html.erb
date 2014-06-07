@@ -1,0 +1,19 @@
+
+ <div class="outerbox">
+
+<h3>Editing user</h3>
+
+<%= render 'form' %>
+
+<% if session[:user_type] == 'super admin' || session[:user_type] == 'admin'  %>
+    <button class="btn"> <%= link_to 'Show', :controller => 'admin' , :action => 'users' %></button> |
+
+       <button class="btn"> <%= link_to 'Back', :controller => 'admin' , :action => 'action_home' %>  </button>
+
+<% else %>
+
+       <button class="btn"><%= link_to 'Show', @user %></button> |
+
+         <button class="btn"><%= link_to 'Back', users_path %>   </button>
+<% end %>
+ </div>

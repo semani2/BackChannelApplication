@@ -1,0 +1,27 @@
+
+
+<div class="outerbox">
+
+<h3> Welcome <%= session[:user].username %>   </h3>
+
+
+<table class="table table-hover ">
+
+
+
+
+<tr><td><%= link_to 'Add/Delete Posts' , :controller => 'posts' , :action => 'index' %></td> </tr>
+  <tr><td><%= link_to 'Add/Delete Users' , :controller => 'admin' , :action => 'users' %> </td></tr>
+  <tr><td><%= link_to 'Add Admins' , :controller => 'admin' , :action => 'new' %> </td></tr>
+  <tr><td><%= link_to 'View/Delete Admins' , :controller => 'admin' , :action => 'view_admin' %></td> </tr>
+  <tr><td><%= link_to 'Add/Delete Category' ,:controller => 'categories' ,:action => 'index' %> </td></tr>
+
+
+
+<% if(session[:user_type] == 'super admin') %>
+<tr><td><%= link_to 'Impersonate User' ,:controller => 'admin' ,:action => 'user_impersonate' %> </td></tr>
+<% end %>
+
+</table>
+
+</div>

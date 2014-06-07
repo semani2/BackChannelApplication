@@ -1,0 +1,25 @@
+
+<div class="outerbox">
+
+<p id="notice"><%= notice %></p>
+
+
+<p>
+  <b>Comment content:</b>
+  <%= @comment.comment_con %>
+</p>
+
+<p>
+  <b>Post:</b>
+  <%= @comment.post %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @comment.user.username %>
+</p>
+
+
+<button class="btn"><%= link_to 'Edit', edit_comment_path(@comment) %></button> |
+  <button class="btn"><%= link_to 'Back', comments_path %></button>
+</div>

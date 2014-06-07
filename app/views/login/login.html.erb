@@ -1,0 +1,23 @@
+
+<%= form_tag :controller => 'login', :action => 'login' do%>
+    <p id="failure"></p>
+   <p> <%= flash[:notice] %>     </p>
+    <div class="outerbox">
+
+      <h3> Login</h3>
+      <p>
+
+        <%= text_field_tag :username,params[:username], placeholder:'Username' %>  <br/>
+
+        <%= password_field_tag :password,params[:password], placeholder:'Password' %>
+      </p>
+
+      <p>
+        <%= submit_tag "Login", :class => 'btn btn-primary' %>
+
+      <button class="btn"><%= link_to 'Sign Up', new_user_path %> </button>
+      </p>
+
+
+      </div>
+<%end %>

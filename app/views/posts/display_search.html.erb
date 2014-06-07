@@ -1,0 +1,130 @@
+<% @flag =0 %>
+<% if params[:theme] == 'user' %>
+    <% if User.find_by_username(params[:search]) %>
+    <% @posts= Post.find_all_by_user_id(((User.find_by_username(params[:search])).id) , :order=>'created_at desc') %>
+    <%else %>
+    <% @flag =1 %>
+    <% end %>
+<% end %>
+<% if params[:theme] == 'category' %>
+    <% if Category.find_by_category_name(params[:search]) %>
+<% @posts= Post.find_all_by_category_id(((Category.find_by_category_name(params[:search])).id)) %>
+    <% else %>
+    <% @flag =1 %>
+    <% end %>
+<% end %>
+
+<% if params[:theme] == 'tags' %>
+    <% if Tag.find_by_tag_name(params[:search]) %>
+            <% @tags = Tag.find_all_by_tag_name(params[:search]) %>
+    <% @post_ids = [] %>
+    <% @tags.each do |tag| @post_ids << tag.post_id end %>
+    <% @posts = [] %>
+    <% @post_ids.each do |post| @posts << Post.find(post) end %>
+    <% else %>
+    <% @flag = 1%>
+    <% end %>
+<% end %>
+<% if params[:theme] == 'content' %>
+<% @allposts = Post.all %>
+<% @posts = [] %>
+    <% @allposts.each do |post|  %>
+
+        <% if post.post_content =~ / #{params[:search]}/ || post.post_content =~ /#{params[:search]}/ || post.post_content =~ /#{params[:search]} / || post.post_content =~ / #{params[:search]} / || post.post_title =~ / #{params[:search]} / || post.post_title =~ /#{params[:search]} / || post.post_title =~ / #{params[:search]}/ || post.post_title =~ /#{params[:search]}/  %>
+            <% @posts << post %>
+
+
+
+        <% end %>
+        <% end %>
+  <% end %>
+<% if @flag > 0 || @posts == []  %>
+ <label> Sorry no results found !</label>
+ <%= link_to 'Click here to search again !' , :controller => 'posts' , :action=>'search' %>
+<% else %>
+<h3>Listing posts</h3>
+
+<br/><br/>
+<table class="table table-hover table-bordered">
+  <tr>
+    <th>Post_title</th>
+    <th>Post_content</th>
+    <th>Category</th>
+    <th>User</th>
+    <th>#Votes</th>
+    <th>#Comments</th>
+    <th>Show</th>
+    <th>Comment</th>
+    <th>Edit</th>
+    <th>Destroy</th>
+
+  </tr>
+
+  <% @posts.each do |post| %>
+      <%@num = post.id  %>
+      <% num_votes = PostVote.count_by_sql "select count(*) from post_votes where post_id =#{@num}" %>
+      <% num_comments = Comment.count_by_sql "select count(*) from comments where post_id = #{@num}" %>
+      <% @post_user = post.user_id %>
+      <% @post_owner = '' %>
+      <% if @post_user == 9999 %>
+          <% @post_owner = 'Anonymous User' %>
+      <% else %>
+          <% @post_owner = post.user.username %>
+      <% end %>
+      <% if session[:user] == nil %>
+          <tr>
+            <td><%= post.post_title %></td>
+            <td><%= post.post_content %></td>
+            <td><%= post.category.id %></td>
+            <td><%= @post_owner %></td>
+            <td><%= "#{num_votes-1}" %></td>
+            <td><%= num_comments %></td>
+            <td><button class="btn"><%= link_to 'Show', post %></button> </td>
+
+            <td><button class="btn"><%= link_to "Comment" , :controller => 'comments' , :action => 'new', :post_id => post.id %></button></td>
+            <td></td>
+            <td></td>
+          </tr>
+      <%else%>
+          <% if post.user_id == session[:user].id%>
+
+              <tr>
+                <td><%= post.post_title %></td>
+                <td class='cols'><%= post.post_content %></td>
+                <td><%= post.category.id %></td>
+                <td><%= @post_owner %></td>
+                <td><%= "#{num_votes-1}" %></td>
+                <td><%= num_comments %></td>
+                <td><button class="btn"><%= link_to 'Show', post %></button></td>
+
+                <td><button class="btn"><%= link_to "Comment" , :controller => 'comments' , :action => 'new', :post_id => post.id %></button></td>
+                <td><button class="btn btn-warning "><%= link_to 'Edit', edit_post_path(post) %></button></td>
+                <td><button class="btn btn-danger "><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></button></td>
+
+              </tr>
+
+
+          <%else%>
+
+              <tr>
+                <td><%= post.post_title %></td>
+                <td><%= post.post_content %></td>
+                <td><%= post.category.id %></td>
+                <td><%= @post_owner %></td>
+                <td><%= link_to "#{num_votes-1}", :controller => 'posts',:action => 'vote', :my_id => post.id %></td>
+                <td><%= num_comments %></td>
+                <td><button class="btn"><%= link_to 'Show', post %></button></td>
+
+                <td><button class="btn"><%= link_to "Comment" , :controller => 'comments' , :action => 'new' , :post_id => post.id %></button></td>
+
+                <td></td>
+                <td></td>
+              </tr>
+
+
+          <%end%>
+      <%end%>
+  <%end%>
+</table>
+<% end %>
+<br />
